@@ -1,5 +1,6 @@
 const userInfo = document.querySelector("#user_info");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const logout = document.querySelector("#logout")
 
 if (currentUser) {
     userInfo.textContent = `Welcome to your dashboard, ${currentUser.name}!`;
@@ -9,3 +10,7 @@ if (currentUser) {
         window.location.href = "/login.html";
     }, 2000);
 }
+
+logout.onclick = () => {
+    window.location.href = "/login.html";
+} 
