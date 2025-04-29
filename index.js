@@ -1,38 +1,44 @@
-const name = document.getElementById("name_box")
-const email = document.getElementById("email_box")
-const password = document.getElementById("pass_box")
-const confir = document.getElementById("conf_box")
-const button = document.getElementById("butt")
-const warn = document.getElementById("warning")
+const nameBox = document.getElementById("name_box");
+const emailBox = document.getElementById("email_box");
+const passwordBox = document.getElementById("pass_box");
+const confirmBox = document.getElementById("conf_box");
+const registerButton = document.getElementById("butt");
+const registerWarning = document.getElementById("warning");
 
+registerButton.onclick = () => {
+    const name = nameBox.value.trim();
+    const email = emailBox.value.trim();
+    const password = passwordBox.value.trim();
+    const confirm = confirmBox.value.trim();
 
-
-button.onclick = () => {
-    if (password.value.trim() === "" || confir.value.trim() === "" || email.value.trim() === "" || name.value.trim() === "") {
-        warn.textContent = "Empty Credentials are not allowed";
+    if (!name || !email || !password || !confirm) {
+        registerWarning.style.color = "red";
+        registerWarning.textContent = "Empty credentials are not allowed.";
         return;
     }
 
-    if (password.value.trim() === confir.value.trim()) {
-        // Fetch existing users from localStorage
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Create new user object
-        let newUser = {
-            name: name.value.trim(),
-            email: email.value.trim(),
-            password: password.value.trim()
-        };
-
-        // Add new user to array
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-
-        warn.style.color = "green";
-        warn.style.fontWeight = "700";
-        warn.textContent = "Info added successfully";
-        window.location.assign("/dashboard.html");
-    } else {
-        warn.textContent = "Both Passwords don't match!!!";
+    if (password !== confirm) {
+        registerWarning.style.color = "red";
+        registerWarning.textContent = "Both passwords must match!";
+        return;
     }
-}
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Optional: Check if user already exists
+    if (users.some(user => user.email === email)) {
+        registerWarning.style.color = "red";
+        registerWarning.textContent = "Email already registered.";
+        return;
+    }
+
+    const newUser = { name, email, password };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+    registerWarning.style.color = "green";
+    registerWarning.style.fontWeight = "700";
+    registerWarning.textContent = "Account created successfully!";
+    window.location.assign("/dashboard.html");
+};

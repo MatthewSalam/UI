@@ -1,10 +1,11 @@
-const user_info = document.querySelector("#user_info");
-const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+const userInfo = document.querySelector("#user_info");
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 if (currentUser) {
-    user_info.textContent = `Welcome to your dashboard, ${currentUser.name}!`;
+    userInfo.textContent = `Welcome to your dashboard, ${currentUser.name}!`;
 } else {
-    user_info.textContent = `User not found. Please log in again.`;
-
-    // window.location.href = "/login.html";
+    userInfo.textContent = "User not found. Redirecting to login...";
+    setTimeout(() => {
+        window.location.href = "/login.html";
+    }, 2000);
 }
